@@ -214,6 +214,16 @@ public:
 };
 int main()
 {
-    cout << "Hello world!" << endl;
+    Grejac G;
+    Grejac G1(50);
+    Grejac G2(G1);
+
+    cout<<G.getTemperatura()<<","<<G1.getTemperatura()<<","<<G2.getTemperatura()<<endl;
+
+    G.setTemperatura(20);
+    G1.setTemperatura(120);
+    G2.setTemperatura(80);
+
+    cout<<G.getTemperatura()<<","<<G1.getTemperatura()<<","<<G2.getTemperatura()<<endl;
     return 0;
 }
