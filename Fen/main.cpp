@@ -13,7 +13,17 @@ protected:
     int temperatura;
 public:
     Grejac(){temperatura = 0;}
-    Grejac(int t){temperatura = t;}
+    Grejac(int t)
+    {
+        if(t >= 100)
+        {
+            temperatura = 100;
+        }else if(t <= 0)
+        {
+            temperatura = 0;
+        }else
+            temperatura = t;
+    }
     Grejac(const Grejac &g){temperatura = g.temperatura;}
 
     int getTemperatura()const
@@ -22,12 +32,10 @@ public:
     }
     void setTemperatura(int temp)
     {
-        if(temp < 0 || temp > 100)
+        if(temp >= 0 && temp <= 100)
         {
-            temperatura = 100;
-        }
-        else
             temperatura = temp;
+        }
     }
 };
 class DinString
@@ -156,7 +164,7 @@ public:
             return out;
         }
 };
-enum Modovi {TOPLO,HLADNO};
+enum Modovi {HLADNO,TOPLO};
 class Fen
 {
 private:
@@ -164,8 +172,44 @@ private:
     Modovi mod;
     Grejac grejac;
 public:
-    Fen():grejac(){marka = "Philiphs"; mod = TOPLO;}
-    Fen(DinString m, Modovi mm, int t): grejac(t){marka = m; mod = mm;}
+    Fen(DinString m, Modovi mm, int t)
+    {
+        marka = m;
+        mod = mm;
+
+        if(mod == HLADNO)
+        {
+            grejac.setTemperatura(0);
+        }else
+            grejac.setTemperatura(1);
+    }
+    Fen(const Fen &f): grejac(f.grejac){marka = f.marka; mod = f.mod;}
+    DinString getMarka(){return marka;}
+    Modovi getMod(){return mod;}
+    Grejac getGrejac()const{return grejac;}
+
+    void setMod(Modovi m)
+    {
+        if(mod == HLADNO && m == TOPLO)
+        {
+            grejac.setTemperatura(1);
+        }else if(mod == TOPLO && m == HLADNO)
+        {
+            grejac.setTemperatura(0);
+        }
+        mod = m;
+    }
+    void setMarka(DinString m){marka = m;}
+    void setTemperatura(int t)
+    {
+        if(t >= 1)
+        {
+            if(mod == TOPLO)
+            {
+                grejac.setTemperatura(t);
+            }
+        }
+    }
 
 };
 int main()
