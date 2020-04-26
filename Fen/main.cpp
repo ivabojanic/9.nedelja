@@ -172,7 +172,7 @@ private:
     Modovi mod;
     Grejac grejac;
 public:
-    Fen(DinString m, Modovi mm, int t)
+    Fen(DinString m, Modovi mm)
     {
         marka = m;
         mod = mm;
@@ -183,7 +183,7 @@ public:
         }else
             grejac.setTemperatura(1);
     }
-    Fen(const Fen &f): grejac(f.grejac){marka = f.marka; mod = f.mod;}
+    Fen(Fen &f): grejac(f.grejac){marka = f.marka; mod = f.mod;}
     DinString getMarka(){return marka;}
     Modovi getMod(){return mod;}
     Grejac getGrejac()const{return grejac;}
@@ -211,6 +211,28 @@ public:
         }
     }
 
+    friend ostream& operator<<(ostream& napolje,Fen &f)
+    {
+        Grejac promenljiva = f.getGrejac();
+        string modic;
+        if(f.getMod() == HLADNO)
+        {
+            modic = "HLADNO";
+        }else
+            modic = "TOPLO";
+
+        napolje<<f.getMarka()<<","<<modic<<","<<promenljiva.getTemperatura()<<endl;
+        return napolje;
+    }
+
+    Fen& operator = (Fen &f)
+    {
+        grejac = f.getGrejac();
+        mod = f.getMod();
+        marka = f.getMarka();
+
+        return *this;
+    }
 };
 int main()
 {
@@ -225,5 +247,13 @@ int main()
     G2.setTemperatura(80);
 
     cout<<G.getTemperatura()<<","<<G1.getTemperatura()<<","<<G2.getTemperatura()<<endl;
+
+    Fen F("Rowenta",HLADNO);
+    Fen F1("Gorenje",TOPLO);
+    Fen F2(F);
+
+    cout<<F<<F1<<F2<<endl;
+
+
     return 0;
 }
