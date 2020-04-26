@@ -307,7 +307,10 @@ public:
     Osoba(DinString i, DinString p){Ime = i; Prezime = p;}
     Osoba(const Osoba &O){Ime = O.Ime; Prezime = O.Prezime;}
 
-    virtual void ispisi()=0;
+    virtual void ispisi()
+    {
+        cout<<Ime<<","<<Prezime;
+    }
 };
 class Student : public Osoba
 {
@@ -320,7 +323,7 @@ public:
 
     void ispisi()
     {
-        cout<<Ime<<","<<Prezime<<","<<brojIndeksa<<endl;
+        cout<<","<<brojIndeksa<<endl;
     }
 
 };
@@ -335,11 +338,66 @@ public:
 
     void ispisi()
     {
-        cout<<Ime<<","<<Prezime<<","<<predmet<<endl;
+        cout<<","<<predmet<<endl;
+    }
+};
+template <class Osoba>
+class Ucionica
+{
+private:
+    List<Osoba> osobe;
+    DinString naziv;
+    int brojOsoba;
+public:
+    Ucionica(DinString n, int b){naziv = n; brojOsoba = b;}
+
+    bool dodaj(const Osoba& Os)
+    {
+        if(osobe.size() < brojOsoba){
+            return osobe.add(osobe.size() + 1, Os);
+        }
+
+        return false;
+    }
+    void ispis()
+    {
+        if(osobe.size() == 0) {
+            cout<<"Prazna ucionica"<<endl;
+        } else
+        {
+            Osoba o;
+            cout<<"U ucionici je :"<<endl;
+
+            for (int i = 1; i <= osobe.size(); i++)
+            {
+                osobe.read(i, o);
+                o.ispisi();
+            }
+        }
     }
 };
 int main()
 {
-    cout << "Hello world!" << endl;
+    Osoba O1("Iva","Bojanic");
+    Osoba O2("Vanja","Kostic");
+    Osoba O3(O1);
+
+    Student S;
+    Student S1(123,"Teodora","Vranes");
+    Student S2(S);
+
+    Profesor P;
+    Profesor P1("Programiranje","Milna","Stankovic");
+    Profesor P2(P);
+
+    Ucionica U("JJZ",0);
+
+    U.dodaj(O1);
+    U.dodaj(O2);
+    U.dodaj(S1);
+    U.dodaj(P);
+    U.dodaj(P2);
+
+    U.ispis();
     return 0;
 }
